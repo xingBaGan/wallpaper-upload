@@ -1,11 +1,14 @@
 const path = require('path');
 const {
-  pths
+  pths,
+  imageUploadBasePath
 } = require('./variable');
 const fs = require('fs');
 
-const getImages = async (folderPath) => {
-  return fs.readdirSync(folderPath).filter(file => {
+
+const getImages = async () => {
+  console.log('image', imageUploadBasePath);
+  return fs.readdirSync(imageUploadBasePath).filter(file => {
     return /\.(jpg|jpeg|png|gif)$/i.test(file);
   });
 }
@@ -20,7 +23,15 @@ const deleteImage = async (imageName) => {
   }
 }
 
+const importImages = async (folderPath) => {
+  // 将其他文件夹的图片，导入到imageBasePath 下
+  const images = fs.readdirSync(folderPath).filter(file => {
+    return /\.(jpg|jpeg|png|gif)$/i.test(file);
+  });
+}
+
 module.exports = {
   getImages,
   deleteImage,
+  importImages,
 }

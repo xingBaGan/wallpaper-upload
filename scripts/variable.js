@@ -13,6 +13,7 @@ const paperAccount = '13757508130';
 const paperPwd = '181855Jzj';
 const parentDir = path.join(__dirname, '..');
 const pths = imageUploadPath.includes(parentDir) ? [imageUploadPath] : [parentDir, imageUploadPath];
+const imageUploadBasePath = path.join(...pths);
 
 module.exports = {
   platformUrl,
@@ -24,4 +25,5 @@ module.exports = {
   paperAccount,
   paperPwd,
   pths,
+  imageUploadBasePath,
 }

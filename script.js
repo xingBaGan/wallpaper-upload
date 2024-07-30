@@ -32,12 +32,13 @@ async function deliverWallpaper() {
   }
 }
 
+console.log('imageUploadBasePath', window.electron.imageUploadBasePath);
 let folderPath;
 let webImages;
 document.getElementById('folderInput').addEventListener('change', async (event) => {
   if (folderPath) return;
   folderPath = event.target.files[0].path.replace(/\\/g, '/').replace(/\/[^\/]*$/, '');
-  updateImageDisplay(folderPath);
+  // updateImageDisplay(folderPath);
 });
 
 async function removeImage(imageInex) {
@@ -46,9 +47,10 @@ async function removeImage(imageInex) {
   await window.electron.deleteImage(imagePath);
 }
 
-async function updateImageDisplay(folderPath) {
-  const images = await window.electron.getImages(folderPath);
+async function updateImageDisplay() {
+  const images = await window.electron.getImages();
   webImages = images;
+  console.log('images', images);
   const imageContainer = document.getElementById('image-container');
   imageContainer.innerHTML = '';
   images.forEach((image, index) => {
@@ -65,8 +67,12 @@ async function updateImageDisplay(folderPath) {
     const deleteBtn = imgElement.querySelector('.delete-btn');
     deleteBtn.addEventListener('click', () => {
       removeImage(index);
-      updateImageDisplay(folderPath);
+      updateImageDisplay();
     });
     imageContainer.appendChild(imgElement);
   });
 }
+
+window.addEventListener('DOMContentLoaded', async ()=>{
+  updateImageDisplay();
+});
