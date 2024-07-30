@@ -32,22 +32,21 @@ async function deliverWallpaper() {
   }
 }
 
-console.log('imageUploadBasePath', window.electron.imageUploadBasePath);
-let folderPath;
 let webImages;
 document.getElementById('folderInput').addEventListener('change', async (event) => {
-  if (folderPath) return;
-  folderPath = event.target.files[0].path.replace(/\\/g, '/').replace(/\/[^\/]*$/, '');
-  // updateImageDisplay(folderPath);
+  const importPath = event.target.files[0].path.replace(/\\/g, '/').replace(/\/[^\/]*$/, '');
+  console.log('importPath', importPath);
+  await window.electron.importImages(importPath);
+  await updateImageDisplay();
 });
 
 async function removeImage(imageInex) {
   const imagePath = webImages[imageInex];
-  console.log('webImages', webImages, imagePath);
   await window.electron.deleteImage(imagePath);
 }
 
 async function updateImageDisplay() {
+  const baseUploadPath = await window.electron.getImageUploadBasePath();
   const images = await window.electron.getImages();
   webImages = images;
   console.log('images', images);
@@ -61,7 +60,7 @@ async function updateImageDisplay() {
       <button class="delete-btn">
         删除
       </button>
-      <img src="file://${folderPath}/${image}" alt="${image}">
+      <img src="file://${baseUploadPath}/${image}" alt="${image}">
     </div>
     `;
     const deleteBtn = imgElement.querySelector('.delete-btn');

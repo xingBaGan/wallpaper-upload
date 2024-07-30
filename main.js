@@ -1,15 +1,19 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
-const { 
+const {
   main,
   deliverWallpaper,
- } = require('./scripts/index');
- const {
+} = require('./scripts/index');
+const {
   getImages,
   deleteImage,
- } = require('./scripts/image_manager');
+  importImages,
+} = require('./scripts/image_manager');
+const {
+  imageUploadBasePath
+} = require('./scripts/variable');
 
-function createWindow () {
+function createWindow() {
   const win = new BrowserWindow({
     width: 800,
     height: 600,
@@ -50,6 +54,12 @@ ipcMain.handle('get-images', async (event, folderPath) => {
   return await getImages(folderPath);
 });
 
+ipcMain.handle('import-image', async (event, folderPath) => {  
+  await importImages(folderPath);
+});
+
 ipcMain.handle('delete-image', async (event, imagePath) => {
   await deleteImage(imagePath);
 });
+
+ipcMain.handle('get-path', () => imageUploadBasePath);
