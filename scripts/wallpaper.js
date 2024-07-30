@@ -6,6 +6,7 @@ const {
 const { getPage } = require('./getPage');
 const fs = require('fs');
 const path = require('path');
+const { logger } = require('../utils/index');
 
 const targetUrl = 'https://user.aishows.cn/wallpaper/edit';
 async function openSite(page) {
@@ -49,8 +50,8 @@ async function uploadImage(page, title) {
   const pths = imageUploadPath.includes(parentDir) ? [imageUploadPath] : [parentDir, imageUploadPath];
   const paths = files.map((filename) => path.join(...pths, filename));
   // console.log('files', files, paths, parentDir, imageUploadPath);
+  logger.log('files', files, paths, parentDir, imageUploadPath);
   const input = await page.locator('input[type=file]');
-  // const filePath = path.resolve('D:\\money_work\\playwright-wrapper\\upload_images', '4.jpg');
   await input.setInputFiles(paths);
   // 设置分类
   await page.getByPlaceholder('请选择分类').click();

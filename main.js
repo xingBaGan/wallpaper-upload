@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
+const fs = require('fs');
 const { 
   main,
   deliverWallpaper,
@@ -39,4 +40,11 @@ ipcMain.handle('run-playwright', async (event, topic) => {
 
 ipcMain.handle('deliver-wallpaper', async (event, topic) => {
   await deliverWallpaper(topic);
+});
+
+// 图片处理
+ipcMain.handle('get-images', async (event, folderPath) => {
+  return fs.readdirSync(folderPath).filter(file => {
+    return /\.(jpg|jpeg|png|gif)$/i.test(file);
+  });
 });

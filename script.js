@@ -31,3 +31,17 @@ async function deliverWallpaper() {
     console.log('请输入主题');
   }
 }
+
+document.getElementById('folderInput').addEventListener('change', async (event) => {
+  const folderPath = event.target.files[0].path.replace(/\\/g, '/').replace(/\/[^\/]*$/, '');
+  const images = await window.electron.getImages(folderPath);
+  const imageContainer = document.getElementById('image-container');
+
+  imageContainer.innerHTML = '';
+  images.forEach(image => {
+    const imgElement = document.createElement('div');
+    imgElement.classList.add('image-item');
+    imgElement.innerHTML = `<img src="file://${folderPath}/${image}" alt="${image}">`;
+    imageContainer.appendChild(imgElement);
+  });
+});
