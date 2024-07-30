@@ -1,4 +1,4 @@
-const { login } = require('./login');
+const { getPage } = require('./getPage');
 const fs = require('fs');
 const { deliverToXHS } = require('./xiaohongshu');
 const {
@@ -10,6 +10,9 @@ const {
   addNewChat,
   getMsg,
 } = require('./ai_utils');
+const {
+  deliverWallpaper
+} = require('./wallpaper');
 
 const { getImage, getImageByPrompt } = require('./ai_image');
 const { expect } = require('playwright/test');
@@ -17,7 +20,7 @@ const { expect } = require('playwright/test');
 // 读取文件名字参数
 const arggs = process.argv.slice(2);
 // console.log('arggs', process.argv);
-const isDev =  process.argv[1] && process.argv[1].includes('dev');
+const isDev = process.argv[1] && process.argv[1].includes('dev');
 const topicName = arggs[0] || '爱一个可以随时打扰的人';
 const imagePrompt = '二次元少女';
 const bid = '6cbrf1k7c4g0';
@@ -25,7 +28,7 @@ let contentURL = `https://www.coze.cn/store/bot/7362179298414837775?from=bots_ca
 
 async function miniTimeFn(page, time, fn) {
   page.setDefaultTimeout(time);
-  if(fn){
+  if (fn) {
     await fn();
   }
   page.setDefaultTimeout(30000);
@@ -38,12 +41,12 @@ async function loginCoze(page) {
   });
   try {
     await page.waitForURL(contentURL, { waitUntil: 'networkidle' });
-    const isVisible = false;
+    let isVisible = false;
     await miniTimeFn(page, 1000, async () => {
-      const btn = await page.getByRole('button', { name: '开始使用', timeout: 1000});
+      const btn = await page.getByRole('button', { name: '开始使用', timeout: 1000 });
       isVisible = await btn.isEnabled();
     })
-    const btn = await page.getByRole('button', { name: '开始使用', timeout: 1000});
+    const btn = await page.getByRole('button', { name: '开始使用', timeout: 1000 });
     if (isVisible) {
       await page.getByRole('button', { name: '开始使用' }).click();
       await page.getByPlaceholder('请输入手机号').click();
@@ -53,14 +56,14 @@ async function loginCoze(page) {
       await page.pause();
       await page.getByRole('button', { name: '下一步' }).click();
     }
-  }catch (e) {
+  } catch (e) {
     console.log('loginCoze', e);
   }
   return page;
 }
 
 async function main(topic = topicName) {
-  const page = await login();
+  const page = await getPage();
   await loginCoze(page);
   const answer = await sendMsg(page, topic);
   // const answer = await getMsg(page);
@@ -72,5 +75,6 @@ async function main(topic = topicName) {
 }
 
 module.exports = {
-  main
+  main,
+  deliverWallpaper,
 }

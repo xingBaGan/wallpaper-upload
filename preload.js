@@ -1,5 +1,6 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('electron', {
-  runPlaywright: (topic) => ipcRenderer.invoke('run-playwright', topic)
+  runPlaywright: (topic) => ipcRenderer.invoke('run-playwright', topic),
+  deliverToAishows: (topic) => ipcRenderer.invoke('deliver-wallpaper', topic),
 });

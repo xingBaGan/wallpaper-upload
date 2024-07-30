@@ -1,6 +1,9 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
-const { main } = require('./scripts/index');
+const { 
+  main,
+  deliverWallpaper,
+ } = require('./scripts/index');
 
 function createWindow () {
   const win = new BrowserWindow({
@@ -32,4 +35,8 @@ app.on('window-all-closed', () => {
 
 ipcMain.handle('run-playwright', async (event, topic) => {
   await main(topic);
+});
+
+ipcMain.handle('deliver-wallpaper', async (event, topic) => {
+  await deliverWallpaper(topic);
 });

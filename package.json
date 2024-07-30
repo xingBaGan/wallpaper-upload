@@ -5,6 +5,7 @@
   "scripts": {
     "start": "electron .",
     "dev": "node ./scripts/dev.js",
+    "wallpaper": "node ./scripts/wallpaper.js",
     "build": "electron-builder"
   },
   "keywords": [],
@@ -33,6 +34,10 @@
       {
         "from": "images",
         "to": "images"
+      },
+      {
+        "from": "upload_images",
+        "to": "upload_images"
       }
     ],
     "files": [
