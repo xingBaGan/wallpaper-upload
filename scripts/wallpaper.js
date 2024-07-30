@@ -47,9 +47,8 @@ async function navigateToUploadPage(page) {
 async function uploadImage(page, title) {
   // 读取 imageUploadPath 下的文件
   const files = fs.readdirSync(imageUploadPath);
-  const paths = files.map((filename) => path.join(...pths, filename));
-  // console.log('files', files, paths, parentDir, imageUploadPath);
-  logger.log('files', files, paths, parentDir, imageUploadPath);
+  const paths = files.map((filename) => path.join(...pths, filename)).filter(path => !path.includes('.md'));
+  logger.log('debug', paths);
   const input = await page.locator('input[type=file]');
   await input.setInputFiles(paths);
   // 设置分类

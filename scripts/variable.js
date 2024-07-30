@@ -12,7 +12,7 @@ const imageUploadPath = path.join(app ? revPath : '', uploadPath);
 const paperAccount = '13757508130';
 const paperPwd = '181855Jzj';
 const parentDir = path.join(__dirname, '..');
-const pths = imageUploadPath.includes(parentDir) ? [imageUploadPath] : [parentDir, imageUploadPath];
+const pths = (imageUploadPath.includes(parentDir) || parentDir.includes("resources")) ? [imageUploadPath] : [parentDir, imageUploadPath];
 const imageUploadBasePath = path.join(...pths);
 
 module.exports = {

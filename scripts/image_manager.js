@@ -1,11 +1,10 @@
 const path = require('path');
 const {
   pths,
-  imageUploadBasePath
+  imageUploadBasePath,
 } = require('./variable');
+const { logger } = require('../utils/index');
 const fs = require('fs');
-
-
 const getImages = async () => {
   return fs.readdirSync(imageUploadBasePath).filter(file => {
     return /\.(jpg|jpeg|png|gif)$/i.test(file);
