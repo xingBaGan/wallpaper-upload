@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Playwright App</title>
   <link rel="stylesheet" href="./style.css">
 </head>
+
 <body>
   <button id="run-button">发布文案</button>
   <input type="text" id="topic" placeholder="请输入文章的主题">
   <!-- 发布图片 -->
   <div class="wallpaper-container">
-      <input type="text" id="pic-topic" placeholder="请输入壁纸的标题">
-      <button id="pic-button">发布壁纸</button>
+    <input type="text" id="pic-topic" placeholder="请输入壁纸的标题">
+    <button id="pic-button">发布壁纸</button>
   </div>
-  <!-- 读取本地upload_images图片，并且展示 -->
-  <input type="file" webkitdirectory directory multiple id="folderInput">
-  <div id="image-container"></div>
+  <div class="images-display">
+    <!-- 读取本地upload_images图片，并且展示 -->
+    <input type="file" webkitdirectory directory multiple id="folderInput">
+    <div id="image-container"></div>
+  </div>
   <script src="script.js"></script>
 </body>
+
 </html>

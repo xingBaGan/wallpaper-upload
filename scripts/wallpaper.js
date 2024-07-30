@@ -2,6 +2,7 @@ const {
   imageUploadPath,
   paperPwd,
   paperAccount,
+  pths,
 } = require('./variable')
 const { getPage } = require('./getPage');
 const fs = require('fs');
@@ -46,8 +47,6 @@ async function navigateToUploadPage(page) {
 async function uploadImage(page, title) {
   // 读取 imageUploadPath 下的文件
   const files = fs.readdirSync(imageUploadPath);
-  const parentDir = path.join(__dirname, '..');
-  const pths = imageUploadPath.includes(parentDir) ? [imageUploadPath] : [parentDir, imageUploadPath];
   const paths = files.map((filename) => path.join(...pths, filename));
   // console.log('files', files, paths, parentDir, imageUploadPath);
   logger.log('files', files, paths, parentDir, imageUploadPath);

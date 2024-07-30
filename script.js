@@ -14,9 +14,9 @@ document.getElementById('topic').addEventListener('keydown', (event) => {
 
 async function enterFn() {
   const topic = document.getElementById('topic').value;
-  if(topic) {
+  if (topic) {
     const result = await window.electron.runPlaywright(topic);
-  }else {
+  } else {
     // 没有输入主题
     console.log('请输入主题');
   }
@@ -32,16 +32,41 @@ async function deliverWallpaper() {
   }
 }
 
+let folderPath;
+let webImages;
 document.getElementById('folderInput').addEventListener('change', async (event) => {
-  const folderPath = event.target.files[0].path.replace(/\\/g, '/').replace(/\/[^\/]*$/, '');
-  const images = await window.electron.getImages(folderPath);
-  const imageContainer = document.getElementById('image-container');
+  if (folderPath) return;
+  folderPath = event.target.files[0].path.replace(/\\/g, '/').replace(/\/[^\/]*$/, '');
+  updateImageDisplay(folderPath);
+});
 
+async function removeImage(imageInex) {
+  const imagePath = webImages[imageInex];
+  console.log('webImages', webImages, imagePath);
+  await window.electron.deleteImage(imagePath);
+}
+
+async function updateImageDisplay(folderPath) {
+  const images = await window.electron.getImages(folderPath);
+  webImages = images;
+  const imageContainer = document.getElementById('image-container');
   imageContainer.innerHTML = '';
-  images.forEach(image => {
+  images.forEach((image, index) => {
     const imgElement = document.createElement('div');
     imgElement.classList.add('image-item');
-    imgElement.innerHTML = `<img src="file://${folderPath}/${image}" alt="${image}">`;
+    imgElement.innerHTML = `
+    <div>
+      <button class="delete-btn">
+        删除
+      </button>
+      <img src="file://${folderPath}/${image}" alt="${image}">
+    </div>
+    `;
+    const deleteBtn = imgElement.querySelector('.delete-btn');
+    deleteBtn.addEventListener('click', () => {
+      removeImage(index);
+      updateImageDisplay(folderPath);
+    });
     imageContainer.appendChild(imgElement);
   });
-});
+}

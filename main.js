@@ -1,10 +1,13 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
-const fs = require('fs');
 const { 
   main,
   deliverWallpaper,
  } = require('./scripts/index');
+ const {
+  getImages,
+  deleteImage,
+ } = require('./scripts/image_manager');
 
 function createWindow () {
   const win = new BrowserWindow({
@@ -44,7 +47,9 @@ ipcMain.handle('deliver-wallpaper', async (event, topic) => {
 
 // 图片处理
 ipcMain.handle('get-images', async (event, folderPath) => {
-  return fs.readdirSync(folderPath).filter(file => {
-    return /\.(jpg|jpeg|png|gif)$/i.test(file);
-  });
+  return await getImages(folderPath);
+});
+
+ipcMain.handle('delete-image', async (event, imagePath) => {
+  await deleteImage(imagePath);
 });
