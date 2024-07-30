@@ -1,0 +1,57 @@
+{
+  "name": "xiaohongshu",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "node ./scripts/dev.js",
+    "build": "electron-builder"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "electron-log": "^5.1.5",
+    "playwright": "^1.44.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.43.1",
+    "electron": "^30.0.9",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.example.myplaywrightapp",
+    "directories": {
+      "output": "dist"
+    },
+    "extraResources": [
+      {
+        "from": "Chromium-1117",
+        "to": "Chromium-1117"
+      },
+      {
+        "from": "images",
+        "to": "images"
+      }
+    ],
+    "files": [
+      "main.js",
+      "preload.js",
+      "script.js",
+      "index.html",
+      "renderer.js",
+      "scripts/**",
+      "utils/**"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  }
+}
